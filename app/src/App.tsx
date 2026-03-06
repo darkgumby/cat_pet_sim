@@ -44,7 +44,7 @@ function App() {
       <audio ref={audioRef} src="/assets/audio/cat_purring.mp3" preload="auto" />
 
       <div style={{ position: 'absolute', top: 30, width: '100%', textAlign: 'center', fontFamily: 'sans-serif', color: 'white', pointerEvents: 'none' }}>
-        <h1>Show your hand to the camera to pet the virtual cat!</h1>
+        <h1>Pet the Kitty!</h1>
       </div>
 
       <div style={{

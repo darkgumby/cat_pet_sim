@@ -144,19 +144,13 @@ export const Scene: React.FC<{ hands: handPoseDetection.Hand[], isPurring: boole
             <primitive object={gltf.scene} scale={1} position={[0, yPos, 0]} />
 
             {/* Visual bounding box for the interaction zone (radius 2.5) */}
-            <Box args={[2, 3.5, 2]} position={[0, 0, 0]}>
+            {/* <Box args={[2, 3.5, 2]} position={[0, 0, 0]}>
                 <meshStandardMaterial wireframe color="#00ffcc" transparent opacity={0.3} />
-            </Box>
+            </Box> */}
 
             <Plane args={[5, 5]} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.2, 0]} receiveShadow>
                 <meshStandardMaterial map={checkerTexture} />
             </Plane>
-
-            {isPurring && (
-                <Text position={[0, 2.5, 0]} fontSize={0.6} color="#eee" fontWeight="bold">
-                    Purr!
-                </Text>
-            )}
 
             {isPurring && (
                 <Sparkles count={50} scale={5} size={6} speed={0.4} opacity={1} color="#ffbdc5" position={[0, 0, 0]} />

@@ -74,7 +74,8 @@ function App() {
           <div style={{
             background: 'rgba(0,0,0,0.8)', color: '#00ffcc',
             padding: '15px', borderRadius: '8px', width: '240px',
-            fontFamily: 'monospace', fontSize: '14px', border: '1px solid #00ffcc'
+            fontFamily: 'monospace', fontSize: '14px', border: '1px solid #00ffcc',
+            textAlign: 'left'
           }}>
             <div ref={coordsRef}>
               Tracking Coordinates:<br />
@@ -89,10 +90,11 @@ function App() {
           <div style={{
             background: 'rgba(0,0,0,0.8)', color: '#eee',
             padding: '15px', borderRadius: '8px', width: '240px',
-            fontFamily: 'monospace', fontSize: '14px', border: '1px solid #eee'
+            fontFamily: 'monospace', fontSize: '14px', border: '1px solid #eee',
+            textAlign: 'left'
           }}>
             <strong style={{ color: '#ffbdc5' }}>Keyboard Commands:</strong><br /><br />
-            [B] Toggle Interaction Bounds<br />
+            [B] Toggle Bounding Box<br />
             [C] Toggle Camera Preview<br />
             [T] Toggle Tracking HUD<br />
             [H] or [Space] Toggle Help

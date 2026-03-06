@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Sphere, Text, Sparkles, OrbitControls, useGLTF, Plane, Box } from '@react-three/drei';
+import { Sphere, Text, Sparkles, OrbitControls, useGLTF, Box, Cylinder } from '@react-three/drei';
 import * as THREE from 'three';
 import { useMemo } from 'react';
 import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
@@ -124,7 +124,7 @@ export const Scene: React.FC<{ hands: handPoseDetection.Hand[], isPurring: boole
         const texture = new THREE.CanvasTexture(canvas);
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
-        texture.repeat.set(10 / 1.75, 10 / 1.75);
+        texture.repeat.set(6.25, 6.25); // Halved yet again to double the tile size 
         return texture;
     }, []);
 
@@ -157,9 +157,12 @@ export const Scene: React.FC<{ hands: handPoseDetection.Hand[], isPurring: boole
                 </Box>
             )}
 
-            <Plane args={[5, 5]} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.2, 0]} receiveShadow>
-                <meshStandardMaterial map={checkerTexture} />
-            </Plane>
+            {/* Cylinder platform: Separate top/bottom vs sides materials */}
+            <Cylinder args={[3, 3, 0.5, 64]} position={[0, -0.45, 0]} receiveShadow>
+                <meshStandardMaterial attach="material-0" color="#ffffffff" />
+                <meshStandardMaterial attach="material-1" map={checkerTexture} />
+                <meshStandardMaterial attach="material-2" map={checkerTexture} />
+            </Cylinder>
 
             {isPurring && (
                 <Sparkles count={50} scale={5} size={6} speed={0.4} opacity={1} color="#ffbdc5" position={[0, 0, 0]} />

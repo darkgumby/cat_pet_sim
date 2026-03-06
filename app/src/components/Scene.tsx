@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Sphere, Text, Sparkles, OrbitControls, useGLTF, Plane, Box } from '@react-three/drei';
 import * as THREE from 'three';
@@ -129,6 +129,17 @@ export const Scene: React.FC<{ hands: handPoseDetection.Hand[], isPurring: boole
     }, []);
 
     const [yPos] = useState(0.76);
+    const [showBoundingBox, setShowBoundingBox] = useState(false);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key.toLowerCase() === 'b') {
+                setShowBoundingBox(prev => !prev);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     return (
         <>
@@ -140,9 +151,11 @@ export const Scene: React.FC<{ hands: handPoseDetection.Hand[], isPurring: boole
             <primitive object={gltf.scene} scale={1} position={[0, yPos, 0]} />
 
             {/* Visual bounding box for the interaction zone (radius 2.5) */}
-            {/* <Box args={[2, 3.5, 2]} position={[0, 0, 0]}>
-                <meshStandardMaterial wireframe color="#00ffcc" transparent opacity={0.3} />
-            </Box> */}
+            {showBoundingBox && (
+                <Box args={[2, 3.5, 2]} position={[0, 0, 0]}>
+                    <meshStandardMaterial wireframe color="#00ffcc" transparent opacity={0.3} />
+                </Box>
+            )}
 
             <Plane args={[5, 5]} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.2, 0]} receiveShadow>
                 <meshStandardMaterial map={checkerTexture} />

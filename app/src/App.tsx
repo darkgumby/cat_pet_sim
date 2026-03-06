@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { WebcamView } from './components/WebcamView';
 import { Scene } from './components/Scene';
@@ -8,7 +8,18 @@ import './App.css';
 function App() {
   const [hands, setHands] = useState<handPoseDetection.Hand[]>([]);
   const [isPurring, setIsPurring] = useState(false);
+  const [showCamera, setShowCamera] = useState(true);
   const coordsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === 'c') {
+        setShowCamera(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const purrTimeout = useRef<number | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -34,7 +45,7 @@ function App() {
 
   return (
     <div style={{ width: '100%', height: '100vh', background: '#2c2c2c', position: 'relative', overflow: 'hidden' }}>
-      <WebcamView onHandsDetected={setHands} />
+      <WebcamView onHandsDetected={setHands} visible={showCamera} />
 
       <Canvas camera={{ position: [-0.248, 1.804, 3.887], fov: 60 }}>
         <Scene hands={hands} isPurring={isPurring} onPurr={handlePurr} coordsRef={coordsRef} />

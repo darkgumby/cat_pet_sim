@@ -4,9 +4,10 @@ import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
 
 interface WebcamViewProps {
     onHandsDetected: (hands: handPoseDetection.Hand[]) => void;
+    visible?: boolean;
 }
 
-export const WebcamView: React.FC<WebcamViewProps> = ({ onHandsDetected }) => {
+export const WebcamView: React.FC<WebcamViewProps> = ({ onHandsDetected, visible = true }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const { hands } = useHandTracking(videoRef);
 
@@ -32,7 +33,14 @@ export const WebcamView: React.FC<WebcamViewProps> = ({ onHandsDetected }) => {
     }, []);
 
     return (
-        <div style={{ position: 'fixed', top: 10, left: 10, zIndex: 10, pointerEvents: 'none' }}>
+        <div style={{
+            position: 'fixed',
+            top: 10,
+            left: 10,
+            zIndex: 10,
+            pointerEvents: 'none',
+            opacity: visible === false ? 0 : 1
+        }}>
             <video
                 ref={videoRef}
                 autoPlay

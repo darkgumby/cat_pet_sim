@@ -11,6 +11,10 @@ function App() {
   const [showCamera, setShowCamera] = useState(true);
   const [showTracking, setShowTracking] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [particleType, setParticleType] = useState<'sparkles' | 'stars' | 'hearts' | 'fish' | 'paws'>(() => {
+    const types: ('sparkles' | 'stars' | 'hearts' | 'fish' | 'paws')[] = ['sparkles', 'stars', 'hearts', 'fish', 'paws'];
+    return types[Math.floor(Math.random() * types.length)];
+  });
   const coordsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,6 +26,12 @@ function App() {
         setShowTracking(prev => !prev);
       } else if (key === 'h' || e.key === ' ') {
         setShowHelp(prev => !prev);
+      } else if (key === 'p') {
+        setParticleType(prev => {
+          const types: ('sparkles' | 'stars' | 'hearts' | 'fish' | 'paws')[] = ['sparkles', 'stars', 'hearts', 'fish', 'paws'];
+          const currentIndex = types.indexOf(prev);
+          return types[(currentIndex + 1) % types.length];
+        });
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -55,7 +65,7 @@ function App() {
       <WebcamView onHandsDetected={setHands} visible={showCamera} />
 
       <Canvas camera={{ position: [-0.248, 1.804, 3.887], fov: 60 }}>
-        <Scene hands={hands} isPurring={isPurring} onPurr={handlePurr} coordsRef={coordsRef} />
+        <Scene hands={hands} isPurring={isPurring} onPurr={handlePurr} coordsRef={coordsRef} particleType={particleType} />
       </Canvas>
 
       {/* Hidden audio element for purr sound */}
@@ -96,8 +106,9 @@ function App() {
             <strong style={{ color: '#ffbdc5' }}>Keyboard Commands:</strong><br /><br />
             [B] Toggle Bounding Box<br />
             [C] Toggle Camera Preview<br />
-            [T] Toggle Tracking HUD<br />
-            [H] or [Space] Toggle Help
+            [H] or [Space] Toggle Help<br />
+            [P] Cycle Particle Effect<br />
+            [T] Toggle Tracking HUD
           </div>
         )}
       </div>

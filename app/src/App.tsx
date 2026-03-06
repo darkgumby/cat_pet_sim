@@ -33,7 +33,7 @@ function App() {
   };
 
   return (
-    <div style={{ width: '100vw', height: '100vh', background: '#2c2c2c' }}>
+    <div style={{ width: '100%', height: '100vh', background: '#2c2c2c', position: 'relative', overflow: 'hidden' }}>
       <WebcamView onHandsDetected={setHands} />
 
       <Canvas camera={{ position: [0.75, 2.75, 3.2], fov: 60 }}>
@@ -43,7 +43,7 @@ function App() {
       {/* Hidden audio element for purr sound */}
       <audio ref={audioRef} src="/assets/audio/cat_purring.mp3" preload="auto" />
 
-      <div style={{ position: 'absolute', bottom: 30, width: '100%', textAlign: 'center', fontFamily: 'sans-serif', color: 'white', pointerEvents: 'none' }}>
+      <div style={{ position: 'absolute', top: 30, width: '100%', textAlign: 'center', fontFamily: 'sans-serif', color: 'white', pointerEvents: 'none' }}>
         <h1>Show your hand to the camera to pet the virtual cat!</h1>
       </div>
 

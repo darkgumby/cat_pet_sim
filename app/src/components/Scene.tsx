@@ -32,7 +32,7 @@ const HandModel: React.FC<HandProps> = ({ hands, onInteract, coordsRef }) => {
 
                             const worldX = (x * viewport.width) / 2;
                             const worldY = (y * viewport.height) / 2;
-                            const posX = -worldX;
+                            const posX = worldX;
                             const posY = worldY;
                             const posZ = z;
 
@@ -58,7 +58,7 @@ const HandModel: React.FC<HandProps> = ({ hands, onInteract, coordsRef }) => {
                     if (indexTip) {
                         const x = (indexTip.x / 640) * 2 - 1;
                         const y = -(indexTip.y / 480) * 2 + 1;
-                        const worldX = (-x * viewport.width) / 2;
+                        const worldX = (x * viewport.width) / 2;
                         const worldY = (y * viewport.height) / 2;
                         const worldZ = indexTip.z ? indexTip.z / 100 : 0;
 

@@ -9,7 +9,8 @@ function App() {
   const [hands, setHands] = useState<handPoseDetection.Hand[]>([]);
   const [isPurring, setIsPurring] = useState(false);
   const [showCamera, setShowCamera] = useState(true);
-  const [showTracking, setShowTracking] = useState(true);
+  const [showTracking, setShowTracking] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
   const coordsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -19,6 +20,8 @@ function App() {
         setShowCamera(prev => !prev);
       } else if (key === 't') {
         setShowTracking(prev => !prev);
+      } else if (key === 'h' || e.key === ' ') {
+        setShowHelp(prev => !prev);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -62,20 +65,40 @@ function App() {
         <h1>Pet the Kitty!</h1>
       </div>
 
-      {showTracking && (
-        <div style={{
-          position: 'absolute', top: 20, right: 20, background: 'rgba(0,0,0,0.8)', color: '#00ffcc',
-          padding: '15px', borderRadius: '8px', pointerEvents: 'none', whiteSpace: 'nowrap',
-          fontFamily: 'monospace', fontSize: '14px', border: '1px solid #00ffcc', zIndex: 100
-        }}>
-          <div ref={coordsRef}>
-            Tracking Coordinates:<br />
-            X: 0.00<br />
-            Y: 0.00<br />
-            Z: 0.00
+      <div style={{
+        position: 'absolute', top: 20, right: 20, zIndex: 100,
+        display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-end',
+        pointerEvents: 'none'
+      }}>
+        {showTracking && (
+          <div style={{
+            background: 'rgba(0,0,0,0.8)', color: '#00ffcc',
+            padding: '15px', borderRadius: '8px', width: '240px',
+            fontFamily: 'monospace', fontSize: '14px', border: '1px solid #00ffcc'
+          }}>
+            <div ref={coordsRef}>
+              Tracking Coordinates:<br />
+              X: 0.00<br />
+              Y: 0.00<br />
+              Z: 0.00
+            </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {showHelp && (
+          <div style={{
+            background: 'rgba(0,0,0,0.8)', color: '#eee',
+            padding: '15px', borderRadius: '8px', width: '240px',
+            fontFamily: 'monospace', fontSize: '14px', border: '1px solid #eee'
+          }}>
+            <strong style={{ color: '#ffbdc5' }}>Keyboard Commands:</strong><br /><br />
+            [B] Toggle Interaction Bounds<br />
+            [C] Toggle Camera Preview<br />
+            [T] Toggle Tracking HUD<br />
+            [H] or [Space] Toggle Help
+          </div>
+        )}
+      </div>
     </div>
   );
 }

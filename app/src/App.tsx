@@ -9,12 +9,16 @@ function App() {
   const [hands, setHands] = useState<handPoseDetection.Hand[]>([]);
   const [isPurring, setIsPurring] = useState(false);
   const [showCamera, setShowCamera] = useState(true);
+  const [showTracking, setShowTracking] = useState(true);
   const coordsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === 'c') {
+      const key = e.key.toLowerCase();
+      if (key === 'c') {
         setShowCamera(prev => !prev);
+      } else if (key === 't') {
+        setShowTracking(prev => !prev);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -58,18 +62,20 @@ function App() {
         <h1>Pet the Kitty!</h1>
       </div>
 
-      <div style={{
-        position: 'absolute', top: 20, right: 20, background: 'rgba(0,0,0,0.8)', color: '#00ffcc',
-        padding: '15px', borderRadius: '8px', pointerEvents: 'none', whiteSpace: 'nowrap',
-        fontFamily: 'monospace', fontSize: '14px', border: '1px solid #00ffcc', zIndex: 100
-      }}>
-        <div ref={coordsRef}>
-          Tracking Coordinates:<br />
-          X: 0.00<br />
-          Y: 0.00<br />
-          Z: 0.00
+      {showTracking && (
+        <div style={{
+          position: 'absolute', top: 20, right: 20, background: 'rgba(0,0,0,0.8)', color: '#00ffcc',
+          padding: '15px', borderRadius: '8px', pointerEvents: 'none', whiteSpace: 'nowrap',
+          fontFamily: 'monospace', fontSize: '14px', border: '1px solid #00ffcc', zIndex: 100
+        }}>
+          <div ref={coordsRef}>
+            Tracking Coordinates:<br />
+            X: 0.00<br />
+            Y: 0.00<br />
+            Z: 0.00
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

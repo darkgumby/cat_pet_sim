@@ -12,8 +12,12 @@ interface HandProps {
 }
 
 const HandModel: React.FC<HandProps> = ({ hands, onInteract, coordsRef }) => {
-    const { viewport } = useThree();
+    const { viewport, camera } = useThree();
     const spheresRef = useRef<THREE.Mesh[]>([]);
+
+    useEffect(() => {
+        (window as any).camera = camera;
+    }, [camera]);
 
     useFrame(() => {
         if (hands.length > 0) {
@@ -63,7 +67,14 @@ const HandModel: React.FC<HandProps> = ({ hands, onInteract, coordsRef }) => {
                         const worldZ = indexTip.z ? indexTip.z / 100 : 0;
 
                         if (coordsRef && coordsRef.current) {
-                            coordsRef.current.innerHTML = `Tracking Coordinates:<br />X: ${worldX.toFixed(2)}<br />Y: ${worldY.toFixed(2)}<br />Z: ${worldZ.toFixed(2)}`;
+                            coordsRef.current.innerHTML = `
+                                <strong>Tracking:</strong><br />
+                                X: ${worldX.toFixed(2)}<br />Y: ${worldY.toFixed(2)}<br />Z: ${worldZ.toFixed(2)}
+                                <br /><br />
+                                <strong>Camera:</strong><br />
+                                Pos: [${camera.position.x.toFixed(2)}, ${camera.position.y.toFixed(2)}, ${camera.position.z.toFixed(2)}]<br />
+                                Target: [${(camera as any).target?.x.toFixed(2) || 0}, ${(camera as any).target?.y.toFixed(2) || 0}, ${(camera as any).target?.z.toFixed(2) || 0}]
+                            `;
                         }
 
                         // Interaction check matches the visual bounding box and Y visibility
@@ -129,10 +140,33 @@ export const Scene: React.FC<{ hands: handPoseDetection.Hand[], isPurring: boole
     }, []);
 
     const [yPos] = useState(0.76);
+    const { camera } = useThree();
 
     useEffect(() => {
-        // Keyboard controls commented out
-    }, [yPos]);
+        // Load saved camera position
+        const savedPos = localStorage.getItem('cat_camera_pos');
+        if (savedPos) {
+            const { x, y, z } = JSON.parse(savedPos);
+            camera.position.set(x, y, z);
+            camera.updateProjectionMatrix();
+        }
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === ' ') {
+                const pos = {
+                    x: camera.position.x,
+                    y: camera.position.y,
+                    z: camera.position.z
+                };
+                localStorage.setItem('cat_camera_pos', JSON.stringify(pos));
+                console.log('Camera position captured and saved:', pos);
+                alert(`Camera position captured: ${JSON.stringify(pos)}`);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [camera]);
 
     return (
         <>

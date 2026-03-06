@@ -15,6 +15,7 @@ function App() {
     const types: ('sparkles' | 'stars')[] = ['sparkles', 'stars'];
     return types[Math.floor(Math.random() * types.length)];
   });
+  const [biome, setBiome] = useState<'plains' | 'forest' | 'arctic'>('plains');
   const coordsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,6 +30,12 @@ function App() {
       } else if (key === 'p') {
         setParticleType(prev => {
           const types: ('sparkles' | 'stars')[] = ['sparkles', 'stars'];
+          const currentIndex = types.indexOf(prev);
+          return types[(currentIndex + 1) % types.length];
+        });
+      } else if (key === 'e') {
+        setBiome(prev => {
+          const types: ('plains' | 'forest' | 'arctic')[] = ['plains', 'forest', 'arctic'];
           const currentIndex = types.indexOf(prev);
           return types[(currentIndex + 1) % types.length];
         });
@@ -65,7 +72,7 @@ function App() {
       <WebcamView onHandsDetected={setHands} visible={showCamera} />
 
       <Canvas camera={{ position: [-0.248, 1.804, 3.887], fov: 60 }}>
-        <Scene hands={hands} isPurring={isPurring} onPurr={handlePurr} coordsRef={coordsRef} particleType={particleType} />
+        <Scene hands={hands} isPurring={isPurring} onPurr={handlePurr} coordsRef={coordsRef} particleType={particleType} biome={biome} />
       </Canvas>
 
       {/* Hidden audio element for purr sound */}
@@ -108,6 +115,7 @@ function App() {
             [C] Toggle Camera Preview<br />
             [H] or [Space] Toggle Help<br />
             [P] Cycle Particle Effect<br />
+            [E] Cycle Environment (Biome)<br />
             [T] Toggle Tracking HUD
           </div>
         )}

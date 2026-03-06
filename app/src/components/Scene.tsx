@@ -4,6 +4,9 @@ import { Sphere, Sparkles, OrbitControls, useGLTF, Box, Cylinder, Stars } from '
 import * as THREE from 'three';
 import { useMemo } from 'react';
 import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
+import { Plains } from './biomes/Plains';
+import { Forest } from './biomes/Forest';
+import { Arctic } from './biomes/Arctic';
 
 interface HandProps {
     hands: handPoseDetection.Hand[];
@@ -113,30 +116,13 @@ interface SceneProps {
     onPurr: () => void;
     coordsRef: React.RefObject<HTMLDivElement | null>;
     particleType: 'sparkles' | 'stars';
+    biome: 'plains' | 'forest' | 'arctic';
 }
 
-export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRef, particleType }) => {
+export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRef, particleType, biome }) => {
     const gltf = useGLTF('/assets/cat_model/cat_model.glb');
-    const checkerTexture = useMemo(() => {
-        const canvas = document.createElement('canvas');
-        canvas.width = 128;
-        canvas.height = 128;
-        const context = canvas.getContext('2d');
-        if (context) {
-            context.fillStyle = '#ffffff';
-            context.fillRect(0, 0, 128, 128);
-            context.fillStyle = '#000000';
-            context.fillRect(0, 0, 64, 64);
-            context.fillRect(64, 64, 64, 64);
-        }
-        const texture = new THREE.CanvasTexture(canvas);
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-        texture.repeat.set(6.25, 6.25); // Halved yet again to double the tile size 
-        return texture;
-    }, []);
 
-    const [yPos] = useState(0.76);
+    const [yPos] = useState(1);
     const [showBoundingBox, setShowBoundingBox] = useState(false);
 
 
@@ -164,26 +150,19 @@ export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRe
 
     return (
         <>
-            <OrbitControls />
-            <ambientLight intensity={0.5} />
-            <directionalLight position={[10, 10, 5]} intensity={1} />
-            <HandModel hands={hands} onInteract={onPurr} coordsRef={coordsRef} />
-
-            <primitive object={gltf.scene} scale={1} position={[0, yPos, 0]} />
-
-            {/* Visual bounding box for the interaction zone (radius 2.5) */}
             {showBoundingBox && (
                 <Box args={[2, 3.5, 2]} position={[0, 0, 0]}>
                     <meshStandardMaterial wireframe color="#00ffcc" transparent opacity={0.3} />
                 </Box>
             )}
 
-            {/* Cylinder platform: Separate top/bottom vs sides materials */}
-            <Cylinder args={[3, 3, 0.5, 64]} position={[0, -0.45, 0]} receiveShadow>
-                <meshStandardMaterial attach="material-0" color="#ffffffff" />
-                <meshStandardMaterial attach="material-1" map={checkerTexture} />
-                <meshStandardMaterial attach="material-2" map={checkerTexture} />
-            </Cylinder>
+            <HandModel hands={hands} onInteract={onPurr} coordsRef={coordsRef} />
+            <primitive object={gltf.scene} scale={1} position={[0, yPos, 0]} />
+
+            {/* Dynamic Environment */}
+            {biome === 'plains' && <Plains />}
+            {biome === 'forest' && <Forest />}
+            {biome === 'arctic' && <Arctic />}
 
             {isPurring && (
                 <>

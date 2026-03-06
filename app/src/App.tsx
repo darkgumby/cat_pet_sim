@@ -36,7 +36,7 @@ function App() {
     <div style={{ width: '100%', height: '100vh', background: '#2c2c2c', position: 'relative', overflow: 'hidden' }}>
       <WebcamView onHandsDetected={setHands} />
 
-      <Canvas camera={{ position: [0.75, 2.75, 3.2], fov: 60 }}>
+      <Canvas camera={{ position: [-0.248, 1.804, 3.887], fov: 60 }}>
         <Scene hands={hands} isPurring={isPurring} onPurr={handlePurr} coordsRef={coordsRef} />
       </Canvas>
 

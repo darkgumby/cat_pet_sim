@@ -165,7 +165,11 @@ export const Scene: React.FC<{ hands: handPoseDetection.Hand[], isPurring: boole
             </Cylinder>
 
             {isPurring && (
-                <Sparkles count={50} scale={5} size={6} speed={0.4} opacity={1} color="#ffbdc5" position={[0, 0, 0]} />
+                <>
+                    {['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'].map((color, idx) => (
+                        <Sparkles key={idx} count={30} scale={5} size={6} speed={0.4} opacity={1} color={color} position={[0, 0, 0]} />
+                    ))}
+                </>
             )}
         </>
     );

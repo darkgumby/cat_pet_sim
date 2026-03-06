@@ -11,8 +11,8 @@ function App() {
   const [showCamera, setShowCamera] = useState(true);
   const [showTracking, setShowTracking] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
-  const [particleType, setParticleType] = useState<'sparkles' | 'stars' | 'hearts' | 'fish' | 'paws'>(() => {
-    const types: ('sparkles' | 'stars' | 'hearts' | 'fish' | 'paws')[] = ['sparkles', 'stars', 'hearts', 'fish', 'paws'];
+  const [particleType, setParticleType] = useState<'sparkles' | 'stars'>(() => {
+    const types: ('sparkles' | 'stars')[] = ['sparkles', 'stars'];
     return types[Math.floor(Math.random() * types.length)];
   });
   const coordsRef = useRef<HTMLDivElement>(null);
@@ -28,7 +28,7 @@ function App() {
         setShowHelp(prev => !prev);
       } else if (key === 'p') {
         setParticleType(prev => {
-          const types: ('sparkles' | 'stars' | 'hearts' | 'fish' | 'paws')[] = ['sparkles', 'stars', 'hearts', 'fish', 'paws'];
+          const types: ('sparkles' | 'stars')[] = ['sparkles', 'stars'];
           const currentIndex = types.indexOf(prev);
           return types[(currentIndex + 1) % types.length];
         });

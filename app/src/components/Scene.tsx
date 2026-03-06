@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Sphere, Text, Sparkles, OrbitControls, useGLTF, Box, Cylinder, Stars, Points, Point } from '@react-three/drei';
+import { Sphere, Sparkles, OrbitControls, useGLTF, Box, Cylinder, Stars } from '@react-three/drei';
 import * as THREE from 'three';
 import { useMemo } from 'react';
 import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
@@ -112,7 +112,7 @@ interface SceneProps {
     isPurring: boolean;
     onPurr: () => void;
     coordsRef: React.RefObject<HTMLDivElement | null>;
-    particleType: 'sparkles' | 'stars' | 'hearts' | 'fish' | 'paws';
+    particleType: 'sparkles' | 'stars';
 }
 
 export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRef, particleType }) => {
@@ -139,111 +139,17 @@ export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRe
     const [yPos] = useState(0.76);
     const [showBoundingBox, setShowBoundingBox] = useState(false);
 
-    const heartTexture = useMemo(() => {
-        const canvas = document.createElement('canvas');
-        canvas.width = 64;
-        canvas.height = 64;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-            ctx.fillStyle = '#ff4466';
-            ctx.beginPath();
-            ctx.moveTo(32, 20);
-            ctx.bezierCurveTo(32, 17, 27, 10, 20, 10);
-            ctx.bezierCurveTo(10, 10, 10, 25, 10, 25);
-            ctx.bezierCurveTo(10, 35, 20, 46, 32, 55);
-            ctx.bezierCurveTo(44, 46, 54, 35, 54, 25);
-            ctx.bezierCurveTo(54, 25, 54, 10, 44, 10);
-            ctx.bezierCurveTo(37, 10, 32, 17, 32, 20);
-            ctx.fill();
-        }
-        return new THREE.CanvasTexture(canvas);
-    }, []);
 
-    const fishTexture = useMemo(() => {
-        const canvas = document.createElement('canvas');
-        canvas.width = 64;
-        canvas.height = 64;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-            ctx.fillStyle = '#ffaa44';
-            // Body
-            ctx.beginPath();
-            ctx.ellipse(32, 32, 20, 12, 0, 0, Math.PI * 2);
-            ctx.fill();
-            // Tail
-            ctx.beginPath();
-            ctx.moveTo(12, 32);
-            ctx.lineTo(2, 22);
-            ctx.lineTo(2, 42);
-            ctx.closePath();
-            ctx.fill();
-            // Eye
-            ctx.fillStyle = '#ffffff';
-            ctx.beginPath();
-            ctx.arc(44, 30, 3, 0, Math.PI * 2);
-            ctx.fill();
-        }
-        return new THREE.CanvasTexture(canvas);
-    }, []);
-
-    const pawsTexture = useMemo(() => {
-        const canvas = document.createElement('canvas');
-        canvas.width = 64;
-        canvas.height = 64;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-            ctx.fillStyle = '#ffcc99'; // Peachy paw color
-            // Large pad
-            ctx.beginPath();
-            ctx.ellipse(32, 42, 14, 10, 0, 0, Math.PI * 2);
-            ctx.fill();
-            // 4 Small pads (toes)
-            ctx.beginPath(); ctx.ellipse(14, 25, 6, 8, 0.2, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.ellipse(26, 16, 6, 8, 0, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.ellipse(38, 16, 6, 8, 0, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.ellipse(50, 25, 6, 8, -0.2, 0, Math.PI * 2); ctx.fill();
-        }
-        return new THREE.CanvasTexture(canvas);
-    }, []);
 
     const starRotationSpeed = useMemo(() => (Math.random() - 0.5) * 0.005, []);
     const starRef = useRef<THREE.Group>(null);
-    const heartsRef = useRef<THREE.Points>(null);
-    const fishRef = useRef<THREE.Points>(null);
-    const pawsRef = useRef<THREE.Points>(null);
 
-    useFrame((state) => {
+    useFrame(() => {
         if (starRef.current) {
             starRef.current.rotation.y += starRotationSpeed;
         }
 
-        // Animate particles rising (Slowed down significantly - extra 5x reduction)
-        if (heartsRef.current) {
-            const positions = heartsRef.current.geometry.attributes.position.array as Float32Array;
-            for (let i = 0; i < positions.length; i += 3) {
-                positions[i + 1] += 0.00032; // Rise up (was 0.0016)
-                if (positions[i + 1] > 3) positions[i + 1] = 0;
-            }
-            heartsRef.current.geometry.attributes.position.needsUpdate = true;
-        }
 
-        if (fishRef.current) {
-            const positions = fishRef.current.geometry.attributes.position.array as Float32Array;
-            for (let i = 0; i < positions.length; i += 3) {
-                positions[i + 1] += 0.0002; // Rise up (was 0.001)
-                if (positions[i + 1] > 3) positions[i + 1] = 0;
-            }
-            fishRef.current.geometry.attributes.position.needsUpdate = true;
-        }
-
-        if (pawsRef.current) {
-            const positions = pawsRef.current.geometry.attributes.position.array as Float32Array;
-            for (let i = 0; i < positions.length; i += 3) {
-                positions[i + 1] += 0.00026; // Rise up (was 0.0013)
-                if (positions[i + 1] > 3) positions[i + 1] = 0;
-            }
-            pawsRef.current.geometry.attributes.position.needsUpdate = true;
-        }
     });
 
     useEffect(() => {
@@ -282,45 +188,14 @@ export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRe
             {isPurring && (
                 <>
                     {particleType === 'sparkles' ? (
-                        ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'].map((color, idx) => (
+                        ['#FFB7B2', '#FFDAC1', '#FFF9B1', '#BAFFC9', '#BAE1FF', '#E0BBE4', '#D291BC'].map((color, idx) => (
                             <Sparkles key={idx} count={30} scale={5} size={6} speed={0.4} opacity={1} color={color} position={[0, 0, 0]} />
                         ))
                     ) : particleType === 'stars' ? (
                         <group ref={starRef}>
-                            {/* White Stars only */}
-                            <Stars radius={2} depth={5} count={500} factor={4} saturation={0} fade speed={1} />
+                            <Stars radius={10} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
                         </group>
-                    ) : particleType === 'hearts' ? (
-                        <Points limit={100} ref={heartsRef}>
-                            <pointsMaterial size={0.5} transparent map={heartTexture} alphaTest={0.5} color="#ff4466" />
-                            {Array.from({ length: 50 }).map((_, i) => (
-                                <Point
-                                    key={i}
-                                    position={[(Math.random() - 0.5) * 4, Math.random() * 3, (Math.random() - 0.5) * 4]}
-                                />
-                            ))}
-                        </Points>
-                    ) : particleType === 'fish' ? (
-                        <Points limit={100} ref={fishRef}>
-                            <pointsMaterial size={0.6} transparent map={fishTexture} alphaTest={0.5} color="#ffaa44" />
-                            {Array.from({ length: 50 }).map((_, i) => (
-                                <Point
-                                    key={i}
-                                    position={[(Math.random() - 0.5) * 4, Math.random() * 3, (Math.random() - 0.5) * 4]}
-                                />
-                            ))}
-                        </Points>
-                    ) : (
-                        <Points limit={100} ref={pawsRef}>
-                            <pointsMaterial size={0.6} transparent map={pawsTexture} alphaTest={0.5} color="#ffcc99" />
-                            {Array.from({ length: 50 }).map((_, i) => (
-                                <Point
-                                    key={i}
-                                    position={[(Math.random() - 0.5) * 4, Math.random() * 3, (Math.random() - 0.5) * 4]}
-                                />
-                            ))}
-                        </Points>
-                    )}
+                    ) : null}
                 </>
             )}
         </>

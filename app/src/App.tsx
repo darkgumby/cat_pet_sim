@@ -11,10 +11,6 @@ function App() {
   const [showCamera, setShowCamera] = useState(true);
   const [showTracking, setShowTracking] = useState(false);
   const [showHelp, setShowHelp] = useState(true);
-  const [particleType] = useState<'sparkles' | 'stars'>(() => {
-    const types: ('sparkles' | 'stars')[] = ['sparkles', 'stars'];
-    return types[Math.floor(Math.random() * types.length)];
-  });
   const [biome, setBiome] = useState<'plains' | 'forest' | 'arctic' | 'alien'>('plains');
   const [catName, setCatName] = useState(() => localStorage.getItem('cat_name') || '');
   const [isNaming, setIsNaming] = useState(false);
@@ -80,7 +76,7 @@ function App() {
       <WebcamView onHandsDetected={setHands} visible={showCamera} />
 
       <Canvas camera={{ position: [-0.248, 1.804, 3.887], fov: 60 }}>
-        <Scene hands={hands} isPurring={isPurring} onPurr={handlePurr} coordsRef={coordsRef} particleType={particleType} biome={biome} />
+        <Scene hands={hands} isPurring={isPurring} onPurr={handlePurr} coordsRef={coordsRef} biome={biome} />
       </Canvas>
 
       {/* Hidden audio element for purr sound */}

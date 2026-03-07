@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Sphere, Sparkles, OrbitControls, useGLTF, Box, Stars } from '@react-three/drei';
+import { Sphere, Sparkles, OrbitControls, useGLTF, Box } from '@react-three/drei';
 import * as THREE from 'three';
-import { useMemo } from 'react';
 import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
 import { Plains } from './biomes/Plains';
 import { Forest } from './biomes/Forest';
@@ -116,11 +115,10 @@ interface SceneProps {
     isPurring: boolean;
     onPurr: () => void;
     coordsRef: React.RefObject<HTMLDivElement | null>;
-    particleType: 'sparkles' | 'stars';
     biome: 'plains' | 'forest' | 'arctic' | 'alien';
 }
 
-export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRef, particleType, biome }) => {
+export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRef, biome }) => {
     const gltf = useGLTF(`${import.meta.env.BASE_URL}assets/cat_model/cat_model.glb`);
 
     const yPos = 1;
@@ -128,16 +126,7 @@ export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRe
 
 
 
-    const starRotationSpeed = useMemo(() => (Math.random() - 0.5) * 0.005, []);
-    const starRef = useRef<THREE.Group>(null);
 
-    useFrame(() => {
-        if (starRef.current) {
-            starRef.current.rotation.y += starRotationSpeed;
-        }
-
-
-    });
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -169,15 +158,9 @@ export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRe
 
             {isPurring && (
                 <>
-                    {particleType === 'sparkles' ? (
-                        ['#FFB7B2', '#FFDAC1', '#FFF9B1', '#BAFFC9', '#BAE1FF', '#E0BBE4', '#D291BC'].map((color, idx) => (
-                            <Sparkles key={idx} count={30} scale={5} size={6} speed={0.4} opacity={1} color={color} position={[0, 0, 0]} />
-                        ))
-                    ) : particleType === 'stars' ? (
-                        <group ref={starRef}>
-                            <Stars radius={10} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-                        </group>
-                    ) : null}
+                    {['#FFB7B2', '#FFDAC1', '#FFF9B1', '#BAFFC9', '#BAE1FF', '#E0BBE4', '#D291BC'].map((color, idx) => (
+                        <Sparkles key={idx} count={30} scale={5} size={6} speed={0.4} opacity={1} color={color} position={[0, 0, 0]} />
+                    ))}
                 </>
             )}
         </>

@@ -15,7 +15,7 @@ function App() {
     const types: ('sparkles' | 'stars')[] = ['sparkles', 'stars'];
     return types[Math.floor(Math.random() * types.length)];
   });
-  const [biome, setBiome] = useState<'plains' | 'forest' | 'arctic' | 'volcano'>('plains');
+  const [biome, setBiome] = useState<'plains' | 'forest' | 'arctic' | 'alien'>('plains');
   const coordsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,8 +25,8 @@ function App() {
         setShowCamera(prev => !prev);
       } else if (key === 'e') {
         setBiome(prev => {
-          const types: ('plains' | 'forest' | 'arctic' | 'volcano')[] =
-            ['plains', 'forest', 'arctic', 'volcano'];
+          const types: ('plains' | 'forest' | 'arctic' | 'alien')[] =
+            ['plains', 'forest', 'arctic', 'alien'];
           const currentIndex = types.indexOf(prev);
           return types[(currentIndex + 1) % types.length];
         });

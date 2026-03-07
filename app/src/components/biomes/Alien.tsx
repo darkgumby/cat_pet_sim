@@ -3,7 +3,7 @@ import { Cylinder, Sparkles, Stars, Dodecahedron, Sphere } from '@react-three/dr
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-export const Volcano: React.FC = () => {
+export const Alien: React.FC = () => {
     const magmaRefs = useRef<(THREE.Group | null)[]>([]);
 
     const rockData = useMemo(() => {
@@ -59,7 +59,7 @@ export const Volcano: React.FC = () => {
 
     return (
         <group>
-            {/* Lighting specific to Volcano - High Visibility Night */}
+            {/* Lighting specific to Alien - High Visibility Night */}
             <ambientLight intensity={1.2} color="#ffffff" />
             <hemisphereLight intensity={1.0} color="#ffaa88" groundColor="#442200" />
             <directionalLight

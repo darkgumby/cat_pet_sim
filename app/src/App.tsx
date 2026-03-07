@@ -19,7 +19,12 @@ function App() {
   const [catName, setCatName] = useState(() => localStorage.getItem('cat_name') || '');
   const [isNaming, setIsNaming] = useState(false);
   const [tempName, setTempName] = useState(catName);
+  const [headerVisible, setHeaderVisible] = useState(true);
   const coordsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setHeaderVisible(!isPurring);
+  }, [isPurring]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -81,7 +86,19 @@ function App() {
       {/* Hidden audio element for purr sound */}
       <audio ref={audioRef} src="/assets/audio/cat_purring.mp3" preload="auto" />
 
-      <div style={{ position: 'absolute', top: 30, width: '100%', textAlign: 'center', fontFamily: 'sans-serif', color: 'white', pointerEvents: 'none' }}>
+      <div
+        className={`cat-header ${headerVisible ? 'visible' : 'hidden'}`}
+        style={{
+          position: 'absolute',
+          top: 30,
+          width: '100%',
+          textAlign: 'center',
+          fontFamily: 'sans-serif',
+          color: biome === 'alien' ? '#ffcc00' : (biome === 'forest' ? '#ffffff' : '#2c3e50'),
+          pointerEvents: 'none',
+          textShadow: biome === 'alien' || biome === 'forest' ? '2px 2px 4px rgba(0,0,0,0.5)' : 'none'
+        }}
+      >
         <h1>Pet {catName || 'the Kitty'}!</h1>
       </div>
 

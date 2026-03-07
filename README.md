@@ -5,7 +5,7 @@ An interactive 3D cat petting simulator that uses **TensorFlow.js** for hand tra
 ## 🚀 Features
 
 - **Hand Pose Detection**: Real-time hand tracking via webcam to interact with the 3D cat.
-- **Dynamic Environments**: Cycle through four unique biomes: Plains, Forest, Arctic, and Alien (Volcanic).
+- **Dynamic Environments**: Cycle through four unique biomes: Plains, Forest, Arctic, and Alien.
 - **Interactive Feedback**: Visual and audio feedback when "petting" the cat, including purring and particle effects.
 - **Customizable Experience**: Give your cat a custom name that persists between sessions.
 - **3D Controls**: Full **OrbitControls** support to rotate and zoom around the scene.

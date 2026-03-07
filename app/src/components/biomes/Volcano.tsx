@@ -1,33 +1,51 @@
-import React, { useMemo } from 'react';
-import { Cylinder, Sparkles, Stars } from '@react-three/drei';
+import React, { useMemo, useRef } from 'react';
+import { Cylinder, Sparkles, Stars, Dodecahedron, Sphere } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
 
 export const Volcano: React.FC = () => {
+    const magmaRefs = useRef<(THREE.Group | null)[]>([]);
+
     const rockData = useMemo(() => {
-        const rocks: { pos: [number, number, number], scale: [number, number, number], rotation: number }[] = [];
-        for (let i = 0; i < 40; i++) {
+        const rocks: { pos: [number, number, number], scale: [number, number, number], rotation: [number, number, number] }[] = [];
+        for (let i = 0; i < 45; i++) {
             const r = 4 + Math.random() * 12;
             const theta = Math.random() * Math.PI * 2;
             rocks.push({
                 pos: [Math.cos(theta) * r, 0, Math.sin(theta) * r],
-                scale: [0.5 + Math.random() * 2, 0.5 + Math.random() * 3, 0.5 + Math.random() * 2],
-                rotation: Math.random() * Math.PI * 2
+                scale: [0.6 + Math.random() * 1.8, 0.4 + Math.random() * 2.5, 0.6 + Math.random() * 1.8],
+                rotation: [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI]
             });
         }
         return rocks;
     }, []);
 
     const magmaData = useMemo(() => {
-        const magma: { pos: [number, number, number], scale: number }[] = [];
+        const magma: { pos: [number, number, number], scale: number, speed: number, offset: number }[] = [];
         for (let i = 0; i < 15; i++) {
             const r = 2 + Math.random() * 10;
             const theta = Math.random() * Math.PI * 2;
             magma.push({
-                pos: [Math.cos(theta) * r, 0.01, Math.sin(theta) * r],
-                scale: 0.5 + Math.random() * 1.5
+                pos: [Math.cos(theta) * r, -0.1, Math.sin(theta) * r],
+                scale: 0.8 + Math.random() * 2,
+                speed: 0.5 + Math.random() * 1,
+                offset: Math.random() * Math.PI * 2
             });
         }
         return magma;
     }, []);
+
+    useFrame((state) => {
+        const t = state.clock.getElapsedTime();
+        magmaRefs.current.forEach((ref, i) => {
+            if (ref) {
+                const data = magmaData[i];
+                const s = 1 + Math.sin(t * data.speed + data.offset) * 0.1;
+                ref.scale.set(s, 1, s);
+                ref.position.y = -0.1 + Math.sin(t * data.speed * 0.5 + data.offset) * 0.05;
+            }
+        });
+    });
 
     return (
         <group>
@@ -56,21 +74,42 @@ export const Volcano: React.FC = () => {
             <pointLight position={[10, 5, 10]} intensity={1.5} color="#ff8844" distance={20} />
             <pointLight position={[-10, 5, -10]} intensity={1.5} color="#ff8844" distance={20} />
 
-            {/* Magma Cracks - Deepest, Darkest Orange */}
+            {/* Magma Cracks - Deepest, Darkest Orange with Animation */}
             {magmaData.map((m, idx) => (
-                <mesh key={idx} position={m.pos} rotation={[-Math.PI / 2, 0, 0]}>
-                    <circleGeometry args={[m.scale, 16]} />
-                    <meshStandardMaterial color="#661100" emissive="#992200" emissiveIntensity={5} />
+                <group
+                    key={idx}
+                    position={m.pos}
+                    ref={(el) => magmaRefs.current[idx] = el}
+                >
+                    <Sphere args={[m.scale, 32, 32]} scale={[1, 0.05, 1]}>
+                        <meshStandardMaterial
+                            color="#661100"
+                            emissive="#992200"
+                            emissiveIntensity={5}
+                            roughness={0.1}
+                            metalness={0.8}
+                        />
+                    </Sphere>
                     <pointLight intensity={3.5} color="#661100" distance={8} />
-                </mesh>
+                </group>
             ))}
 
-            {/* Volcanic Rocks - Switched to visible Lighter Gray */}
+            {/* Volcanic Rocks - Now using faceted geometry for a more organic look */}
             {rockData.map((rock, idx) => (
-                <mesh key={idx} position={rock.pos} scale={rock.scale} rotation={[0, rock.rotation, 0]} castShadow>
-                    <boxGeometry args={[1, 1, 1]} />
-                    <meshStandardMaterial color="#555555" roughness={0.8} metalness={0.1} />
-                </mesh>
+                <Dodecahedron
+                    key={idx}
+                    position={rock.pos}
+                    scale={rock.scale}
+                    rotation={rock.rotation}
+                    castShadow
+                >
+                    <meshStandardMaterial
+                        color="#444444"
+                        roughness={0.9}
+                        metalness={0.1}
+                        flatShading={true}
+                    />
+                </Dodecahedron>
             ))}
 
             {/* Central Fill Light for the cat - Much Brighter for Night Visibility */}

@@ -122,48 +122,6 @@ export const Volcano: React.FC = () => {
                 </Dodecahedron>
             ))}
 
-            {/* Background Volcano - Extreme Distance Far Horizon */}
-            <group position={[150, -40, -800]} scale={50} rotation={[0, -Math.PI / 4, 0]}>
-                {/* Main Mountain */}
-                <mesh position={[0, 1.5, 0]} castShadow>
-                    <coneGeometry args={[2, 3, 32]} />
-                    <meshStandardMaterial color="#050505" roughness={1} />
-                </mesh>
-
-                {/* Glowing Crater */}
-                <mesh position={[0, 3.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                    <circleGeometry args={[0.8, 32]} />
-                    <meshStandardMaterial color="#ff2200" emissive="#ff0000" emissiveIntensity={50} />
-                </mesh>
-                <pointLight position={[0, 4, 0]} intensity={60} color="#ff3300" distance={500} />
-
-                {/* Eruption Particles */}
-                {/* Smoke */}
-                <Sparkles
-                    count={100}
-                    scale={[4, 25, 4]}
-                    position={[0, 15, 0]}
-                    color="#000000"
-                    size={20}
-                    speed={1.0}
-                    noise={3.0}
-                />
-                {/* Sparks */}
-                <Sparkles
-                    count={50}
-                    scale={[3, 15, 3]}
-                    position={[0, 10, 0]}
-                    color="#ff6600"
-                    size={8}
-                    speed={2.5}
-                    noise={4.0}
-                />
-                {/* Lava "Chunks" */}
-                {Array.from({ length: 20 }).map((_, i) => (
-                    <LavaChunk key={i} />
-                ))}
-            </group>
-
             {/* Central Fill Light for the cat - Much Brighter for Night Visibility */}
             <pointLight position={[0, 3, 2]} intensity={5.0} color="#ffffff" distance={15} />
             <pointLight position={[0, 2, -2]} intensity={3.0} color="#ffaa00" distance={12} />
@@ -171,26 +129,3 @@ export const Volcano: React.FC = () => {
     );
 };
 
-const LavaChunk: React.FC = () => {
-    const ref = useRef<THREE.Mesh>(null);
-    const speed = useMemo(() => 0.5 + Math.random() * 1, []);
-    const delay = useMemo(() => Math.random() * 5, []);
-    const horizontalSpeed = useMemo(() => (Math.random() - 0.5) * 2, []);
-
-    useFrame((state) => {
-        if (!ref.current) return;
-        const t = ((state.clock.getElapsedTime() * speed) + delay) % 5;
-        const y = 8 + (t * 5) - (0.5 * 2 * t * t);
-        const x = t * horizontalSpeed;
-
-        ref.current.position.set(x, y, 0);
-        ref.current.scale.setScalar(t > 4 ? 0 : 1);
-    });
-
-    return (
-        <mesh ref={ref}>
-            <sphereGeometry args={[0.2, 8, 8]} />
-            <meshStandardMaterial color="#ff4400" emissive="#ff4400" emissiveIntensity={5} />
-        </mesh>
-    );
-};

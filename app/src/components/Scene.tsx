@@ -7,6 +7,7 @@ import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
 import { Plains } from './biomes/Plains';
 import { Forest } from './biomes/Forest';
 import { Arctic } from './biomes/Arctic';
+import { Volcano } from './biomes/Volcano';
 
 interface HandProps {
     hands: handPoseDetection.Hand[];
@@ -116,7 +117,7 @@ interface SceneProps {
     onPurr: () => void;
     coordsRef: React.RefObject<HTMLDivElement | null>;
     particleType: 'sparkles' | 'stars';
-    biome: 'plains' | 'forest' | 'arctic';
+    biome: 'plains' | 'forest' | 'arctic' | 'volcano';
 }
 
 export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRef, particleType, biome }) => {
@@ -163,6 +164,7 @@ export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRe
             {biome === 'plains' && <Plains />}
             {biome === 'forest' && <Forest />}
             {biome === 'arctic' && <Arctic />}
+            {biome === 'volcano' && <Volcano />}
 
             {isPurring && (
                 <>

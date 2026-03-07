@@ -15,7 +15,7 @@ function App() {
     const types: ('sparkles' | 'stars')[] = ['sparkles', 'stars'];
     return types[Math.floor(Math.random() * types.length)];
   });
-  const [biome, setBiome] = useState<'plains' | 'forest' | 'arctic'>('plains');
+  const [biome, setBiome] = useState<'plains' | 'forest' | 'arctic' | 'volcano'>('plains');
   const coordsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,7 +35,8 @@ function App() {
         });
       } else if (key === 'e') {
         setBiome(prev => {
-          const types: ('plains' | 'forest' | 'arctic')[] = ['plains', 'forest', 'arctic'];
+          const types: ('plains' | 'forest' | 'arctic' | 'volcano')[] =
+            ['plains', 'forest', 'arctic', 'volcano'];
           const currentIndex = types.indexOf(prev);
           return types[(currentIndex + 1) % types.length];
         });
@@ -115,7 +116,7 @@ function App() {
             [C] Toggle Camera Preview<br />
             [H] or [Space] Toggle Help<br />
             [P] Cycle Particle Effect<br />
-            [E] Cycle Environment (Biome)<br />
+            [E] Cycle Environment<br />
             [T] Toggle Tracking HUD
           </div>
         )}

@@ -151,6 +151,7 @@ export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRe
 
     return (
         <>
+            <OrbitControls makeDefault />
             {showBoundingBox && (
                 <Box args={[2, 3.5, 2]} position={[0, 0, 0]}>
                     <meshStandardMaterial wireframe color="#00ffcc" transparent opacity={0.3} />

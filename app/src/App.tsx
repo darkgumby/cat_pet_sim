@@ -84,7 +84,7 @@ function App() {
       </Canvas>
 
       {/* Hidden audio element for purr sound */}
-      <audio ref={audioRef} src="/assets/audio/cat_purring.mp3" preload="auto" />
+      <audio ref={audioRef} src={`${import.meta.env.BASE_URL}assets/audio/cat_purring.mp3`} preload="auto" />
 
       <div
         className={`cat-header ${headerVisible ? 'visible' : 'hidden'}`}

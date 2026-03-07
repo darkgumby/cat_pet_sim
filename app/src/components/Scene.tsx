@@ -121,7 +121,7 @@ interface SceneProps {
 }
 
 export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRef, particleType, biome }) => {
-    const gltf = useGLTF('/assets/cat_model/cat_model.glb');
+    const gltf = useGLTF(`${import.meta.env.BASE_URL}assets/cat_model/cat_model.glb`);
 
     const [yPos] = useState(1);
     const [showBoundingBox, setShowBoundingBox] = useState(false);

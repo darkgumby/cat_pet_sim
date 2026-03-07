@@ -21,15 +21,25 @@ export const Volcano: React.FC = () => {
     }, []);
 
     const magmaData = useMemo(() => {
-        const magma: { pos: [number, number, number], scale: number, speed: number, offset: number }[] = [];
+        const magma: { pos: [number, number, number], scale: number, speed: number, offset: number, color: string, emissive: string }[] = [];
+        const lavaPalettes = [
+            { color: "#661100", emissive: "#992200" }, // Deep Red
+            { color: "#802200", emissive: "#cc3300" }, // Burnt Orange
+            { color: "#4d0a00", emissive: "#801a00" }, // Dark Maroon
+            { color: "#993300", emissive: "#ff5500" }, // Bright Lava
+            { color: "#b34700", emissive: "#ff6600" }, // Intense Orange
+        ];
+
         for (let i = 0; i < 15; i++) {
             const r = 2 + Math.random() * 10;
             const theta = Math.random() * Math.PI * 2;
+            const palette = lavaPalettes[Math.floor(Math.random() * lavaPalettes.length)];
             magma.push({
                 pos: [Math.cos(theta) * r, -0.1, Math.sin(theta) * r],
                 scale: 0.8 + Math.random() * 2,
                 speed: 0.5 + Math.random() * 1,
-                offset: Math.random() * Math.PI * 2
+                offset: Math.random() * Math.PI * 2,
+                ...palette
             });
         }
         return magma;
@@ -74,7 +84,7 @@ export const Volcano: React.FC = () => {
             <pointLight position={[10, 5, 10]} intensity={1.5} color="#ff8844" distance={20} />
             <pointLight position={[-10, 5, -10]} intensity={1.5} color="#ff8844" distance={20} />
 
-            {/* Magma Cracks - Deepest, Darkest Orange with Animation */}
+            {/* Magma Cracks - Varied Reds and Oranges with Animation */}
             {magmaData.map((m, idx) => (
                 <group
                     key={idx}
@@ -83,14 +93,14 @@ export const Volcano: React.FC = () => {
                 >
                     <Sphere args={[m.scale, 32, 32]} scale={[1, 0.05, 1]}>
                         <meshStandardMaterial
-                            color="#661100"
-                            emissive="#992200"
+                            color={m.color}
+                            emissive={m.emissive}
                             emissiveIntensity={5}
                             roughness={0.1}
                             metalness={0.8}
                         />
                     </Sphere>
-                    <pointLight intensity={3.5} color="#661100" distance={8} />
+                    <pointLight intensity={3.5} color={m.color} distance={8} />
                 </group>
             ))}
 

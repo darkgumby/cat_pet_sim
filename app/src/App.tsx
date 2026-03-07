@@ -90,7 +90,7 @@ function App() {
         className={`cat-header ${headerVisible ? 'visible' : 'hidden'}`}
         style={{
           position: 'absolute',
-          top: 30,
+          top: 0,
           width: '100%',
           textAlign: 'center',
           fontFamily: 'sans-serif',
@@ -99,7 +99,7 @@ function App() {
           textShadow: biome === 'alien' || biome === 'forest' ? '2px 2px 4px rgba(0,0,0,0.5)' : 'none'
         }}
       >
-        <h1>Pet {catName || 'the Kitty'}!</h1>
+        <h1 style={{ marginTop: 0 }}>Pet {catName || 'the Kitty'}!</h1>
       </div>
 
       <div style={{

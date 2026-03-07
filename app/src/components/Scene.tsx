@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Sphere, Sparkles, OrbitControls, useGLTF, Box } from '@react-three/drei';
 import * as THREE from 'three';
@@ -128,6 +128,21 @@ export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRe
 
 
 
+    const sparkleColors = useMemo(() => {
+        switch (biome) {
+            case 'plains':
+                return ['#FF69B4', '#DA70D6', '#FF1493', '#C71585']; // Vibrant Pinks
+            case 'forest':
+                return ['#FFD700', '#FFA500', '#FFFF00', '#FF8C00']; // Bright Gold/Orange
+            case 'arctic':
+                return ['#4169E1', '#0000FF', '#4B0082', '#8A2BE2']; // Deep Blues/Purples
+            case 'alien':
+                return ['#00FFFF', '#7DF9FF', '#39FF14', '#FF00FF']; // Cyan/Neon Green/Magenta
+            default:
+                return ['#FFB7B2', '#FFDAC1', '#FFF9B1', '#BAFFC9'];
+        }
+    }, [biome]);
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key.toLowerCase() === 'b') {
@@ -158,8 +173,8 @@ export const Scene: React.FC<SceneProps> = ({ hands, isPurring, onPurr, coordsRe
 
             {isPurring && (
                 <>
-                    {['#FFB7B2', '#FFDAC1', '#FFF9B1', '#BAFFC9', '#BAE1FF', '#E0BBE4', '#D291BC'].map((color, idx) => (
-                        <Sparkles key={idx} count={30} scale={5} size={6} speed={0.4} opacity={1} color={color} position={[0, 0, 0]} />
+                    {sparkleColors.map((color: string, idx: number) => (
+                        <Sparkles key={idx} count={40} scale={5} size={7} speed={0.4} opacity={1} color={color} position={[0, 0, 0]} />
                     ))}
                 </>
             )}

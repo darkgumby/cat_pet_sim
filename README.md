@@ -24,7 +24,7 @@ An interactive 3D cat petting simulator that uses **TensorFlow.js** for hand tra
 
 ## ✨ Particle Effects
 
-- **Sparkles**: A cascade of rainbow-colored sparkles that appear during interaction.
+- **Sparkles**: Magical sparkles that dynamically adapt their color palette to contrast with the current biome.
 
 ## ⌨️ Keyboard Commands
 

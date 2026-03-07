@@ -71,4 +71,8 @@ This project is configured for automatic deployment via **GitHub Actions**. Any 
 3. Move your hand into the interaction zone (press **[B]** to see the bounding box).
 4. When your hand is inside the zone and above the floor, the cat will purr and release the active particle effect!
 
+## 📄 License
+
+This project is licensed under the **OBSD (ISC)** License. See the [LICENSE](LICENSE) file for details.
+
 

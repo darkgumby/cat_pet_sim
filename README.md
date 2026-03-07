@@ -26,11 +26,11 @@ An interactive 3D cat petting simulator that uses **TensorFlow.js** for hand tra
 
 | Key | Action |
 |-----|--------|
-| **[P]** | **Cycle Particle Effect** (Sparkles -> Stars -> Hearts -> Fish -> Paws) |
 | **[B]** | Toggle Interaction Bounding Box |
 | **[C]** | Toggle Webcam Preview |
-| **[T]** | Toggle Coordinate Tracking HUD |
+| **[E]** | Cycle Environments (Plains -> Forest -> Arctic -> Volcano) |
 | **[H] / [Space]** | Toggle Help Menu |
+| **[T]** | Toggle Coordinate Tracking HUD |
 
 ## 📦 Getting Started
 

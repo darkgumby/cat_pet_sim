@@ -10,8 +10,8 @@ function App() {
   const [isPurring, setIsPurring] = useState(false);
   const [showCamera, setShowCamera] = useState(true);
   const [showTracking, setShowTracking] = useState(false);
-  const [showHelp, setShowHelp] = useState(false);
-  const [particleType, setParticleType] = useState<'sparkles' | 'stars'>(() => {
+  const [showHelp, setShowHelp] = useState(true);
+  const [particleType] = useState<'sparkles' | 'stars'>(() => {
     const types: ('sparkles' | 'stars')[] = ['sparkles', 'stars'];
     return types[Math.floor(Math.random() * types.length)];
   });
@@ -23,16 +23,6 @@ function App() {
       const key = e.key.toLowerCase();
       if (key === 'c') {
         setShowCamera(prev => !prev);
-      } else if (key === 't') {
-        setShowTracking(prev => !prev);
-      } else if (key === 'h' || e.key === ' ') {
-        setShowHelp(prev => !prev);
-      } else if (key === 'p') {
-        setParticleType(prev => {
-          const types: ('sparkles' | 'stars')[] = ['sparkles', 'stars'];
-          const currentIndex = types.indexOf(prev);
-          return types[(currentIndex + 1) % types.length];
-        });
       } else if (key === 'e') {
         setBiome(prev => {
           const types: ('plains' | 'forest' | 'arctic' | 'volcano')[] =
@@ -40,6 +30,10 @@ function App() {
           const currentIndex = types.indexOf(prev);
           return types[(currentIndex + 1) % types.length];
         });
+      } else if (key === 'h' || e.key === ' ') {
+        setShowHelp(prev => !prev);
+      } else if (key === 't') {
+        setShowTracking(prev => !prev);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -88,6 +82,22 @@ function App() {
         display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-end',
         pointerEvents: 'none'
       }}>
+        {showHelp && (
+          <div style={{
+            background: 'rgba(0,0,0,0.8)', color: '#eee',
+            padding: '15px', borderRadius: '8px', width: '240px',
+            fontFamily: 'monospace', fontSize: '14px', border: '1px solid #eee',
+            textAlign: 'left'
+          }}>
+            {/* <strong style={{ color: '#ffbdc5' }}>Keyboard Commands:</strong><br /><br /> */}
+            [B] Toggle Bounding Box<br />
+            [C] Toggle Camera Preview<br />
+            [E] Cycle Environments<br />
+            [H] or [Space] Toggle Help<br />
+            [T] Toggle Tracking HUD<br />
+          </div>
+        )}
+
         {showTracking && (
           <div style={{
             background: 'rgba(0,0,0,0.8)', color: '#00ffcc',
@@ -101,23 +111,6 @@ function App() {
               Y: 0.00<br />
               Z: 0.00
             </div>
-          </div>
-        )}
-
-        {showHelp && (
-          <div style={{
-            background: 'rgba(0,0,0,0.8)', color: '#eee',
-            padding: '15px', borderRadius: '8px', width: '240px',
-            fontFamily: 'monospace', fontSize: '14px', border: '1px solid #eee',
-            textAlign: 'left'
-          }}>
-            <strong style={{ color: '#ffbdc5' }}>Keyboard Commands:</strong><br /><br />
-            [B] Toggle Bounding Box<br />
-            [C] Toggle Camera Preview<br />
-            [H] or [Space] Toggle Help<br />
-            [P] Cycle Particle Effect<br />
-            [E] Cycle Environment<br />
-            [T] Toggle Tracking HUD
           </div>
         )}
       </div>

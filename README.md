@@ -5,15 +5,11 @@ An interactive 3D cat petting simulator that uses **TensorFlow.js** for hand tra
 ## 🚀 Features
 
 - **Hand Pose Detection**: Real-time hand tracking via webcam to interact with the 3D cat.
-- **Dynamic Particle Effects**:
-  - **Sparkles**: Rainbow-colored sparkles.
-  - **Stars**: A slow-rotating stellar field.
-  - **Hearts**: Peacefully rising red hearts.
-  - **Fish**: Gracefully floating orange fish.
-  - **Cat Paws**: Cute peachy paw prints.
-- **Interactive Environment**: A 3D checkered platform with a premium stylized cat model.
-- **Audio Feedback**: Purring sound effects that activate during interaction.
-- **HUD Interface**: Real-time coordinate tracking and a comprehensive help menu.
+- **Dynamic Environments**: Cycle through four unique biomes: Plains, Forest, Arctic, and Alien (Volcanic).
+- **Interactive Feedback**: Visual and audio feedback when "petting" the cat, including purring and particle effects.
+- **Customizable Experience**: Give your cat a custom name that persists between sessions.
+- **3D Controls**: Full **OrbitControls** support to rotate and zoom around the scene.
+- **Advanced HUD**: Real-time hand coordinate tracking and a comprehensive help interface.
 
 ## 🛠 Tech Stack
 
@@ -21,6 +17,13 @@ An interactive 3D cat petting simulator that uses **TensorFlow.js** for hand tra
 - **3D Engine**: Three.js, @react-three/fiber, @react-three/drei
 - **AI/ML**: TensorFlow.js (@tensorflow-models/hand-pose-detection)
 - **Styling**: Vanilla CSS
+
+## ✨ Particle Effects
+
+The app randomly assigns one of the following magical effects on load:
+
+- **Sparkles**: A cascade of rainbow-colored sparkles that appear during interaction.
+- **Stars**: An immersive, slow-rotating stellar field that fills the scene.
 
 ## ⌨️ Keyboard Commands
 
@@ -36,12 +39,13 @@ An interactive 3D cat petting simulator that uses **TensorFlow.js** for hand tra
 ## 📦 Getting Started
 
 ### Prerequisites
+
 - Node.js (Latest LTS recommended)
 - A webcam for hand tracking
 
 ### Installation
 
-1. Clone the repository
+1. Clone the repository.
 2. Navigate to the app directory:
    ```bash
    cd app
@@ -56,7 +60,9 @@ An interactive 3D cat petting simulator that uses **TensorFlow.js** for hand tra
    ```
 
 ## 🐾 How to Pet
+
 1. Allow webcam access when prompted.
 2. Position your hand so the tracking spheres appear in the scene.
 3. Move your hand into the interaction zone (press **[B]** to see the bounding box).
 4. When your hand is inside the zone and above the floor, the cat will purr and release the active particle effect!
+
